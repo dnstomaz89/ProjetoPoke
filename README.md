@@ -27,3 +27,7 @@ O propósito desse pequeno sistema é mostrar que é possível desenvolvermos um
 
 
 Made with 💜, HTML, CSS and only Vanilla JS. 
+
+Alunos 
+Dennis Tomaz de Oliveira
+Thiago das Chagas Sabino

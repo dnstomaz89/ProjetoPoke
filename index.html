@@ -1,44 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Bootstrap 5-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<!-- Favicon -->
-<link rel="icon" type="image/png" href="images/fatecitu.png">
   <link rel="stylesheet" href="css/style.css">
-  <title>Fatec Itu</title>
+  <title>Pokémon</title>
 </head>
+
 <body class="login">
-  <div class="card" style="width: 25%;">
-    <div class="text-center my-5">
+  <video autoplay muted loop id="myVideo">
+    <source src="movie/videoplayback.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+  <div style="width: 25%">
+    <div class="text-center">
       <!-- m de margin e y de top e bottom. Saiba mais em: https://getbootstrap.com/docs/5.0/utilities/spacing/ -->
-      <img src="images/fatecitu.png" alt="logo Fatec Itu" width="200">
+      <img src="images/LogoPokemon.png" alt="logo Pokémon" width="500">
     </div>
-    <div class="card-body">
-      <h5 class="card-title">Área Reservada</h5>
-      <form>
-        <div class="form-group">
-          <label for="emailInput">E-mail</label>
-          <input type="email" class="form-control" placeholder="E-mail do usuário" id="emailInput">
-        </div>
-        <div class="form-group">
-          <label for="passwordInput">Senha</label>
-          <input type="password" class="form-control" placeholder="Senha do usuário" id="passwordInput">
-        </div>
-      </form>
-      <div class="mt-3">
-        <button class="btn btn-outline-primary me-2" onclick="loginFirebase(document.getElementById('emailInput').value, 
+    <h3 class="text-light text-center" ><img src="/images/PikachuLogo.png" width="128px" height="128px"> <br>Área Reservada P/ Treinadores</h3>
+    
+    <form>
+
+      <div class="form-group">
+        <label class="text-warning" for="emailInput">E-mail do Treinador</label>
+        <input type="email" class="form-control" placeholder="E-mail do treinador Pokémon" id="emailInput">
+      </div>
+
+      <div class="form-group">
+        <label class="text-warning" for="passwordInput">Senha do Treinador</label>
+        <input type="password" class="form-control" placeholder="Senha do treinador Pokémon" id="passwordInput">
+      </div>
+
+    </form>
+    <div class="backgroundmt" class="mt-3">
+      <button class="btn btn-outline-success me-2" onclick="loginFirebase(document.getElementById('emailInput').value, 
       document.getElementById('passwordInput').value)">🔐 Autenticar </button>
 
-        <button type="button" class="btn btn-outline-success" onclick="novoUsuario(document.getElementById('emailInput').value,
-      document.getElementById('passwordInput').value)">👤 Criar nova conta</button>
-      </div>
+      <button type="button" class="btn btn-outline-primary" onclick="novoUsuario(document.getElementById('emailInput').value,
+      document.getElementById('passwordInput').value)">👤 Novo Treinador ?</button>
     </div>
   </div>
-<!-- Carregamento dos scripts -->
+  <!-- Carregamento dos scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-analytics.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
@@ -46,4 +52,5 @@
   <script src="js/firebase.js"></script>
   <script src="js/authentication.js"></script>
 </body>
+
 </html>

@@ -6,16 +6,21 @@
  */
 function obtemDados(collection) {
   var tabela = document.getElementById('tabelaDados')
+
   firebase.database().ref(collection).on('value', (snapshot) => {
     tabela.innerHTML = ''
     let cabecalho = tabela.insertRow()
-    cabecalho.className = 'table-info'
-    cabecalho.insertCell().textContent = 'Nome'
-    cabecalho.insertCell().textContent = 'Nascimento'
+    cabecalho.className = 'table-success'
+    cabecalho.insertCell().textContent = 'Pokémon'
+    cabecalho.insertCell().textContent = 'Captura'
     cabecalho.insertCell().textContent = 'Email'
     cabecalho.insertCell().textContent = 'Sexo'
-    cabecalho.insertCell().textContent = 'Salário'
+    cabecalho.insertCell().textContent = 'Peso (kl)'
+    cabecalho.insertCell().textContent = 'Altura (m)'
+    cabecalho.insertCell().textContent = 'Shiny'
+    cabecalho.insertCell().textContent = 'Região'
     cabecalho.insertCell().innerHTML = 'Opções'
+    
 
     snapshot.forEach(item => {
       // Dados do Firebase
@@ -25,16 +30,22 @@ function obtemDados(collection) {
       //Criando as novas linhas na tabela
       let novaLinha = tabela.insertRow()
       novaLinha.insertCell().textContent = item.val().nome
-      novaLinha.insertCell().textContent = item.val().nascimento
+      novaLinha.insertCell().textContent = item.val().captura
       novaLinha.insertCell().textContent = item.val().email
       novaLinha.insertCell().textContent = item.val().sexo
-      novaLinha.insertCell().textContent = item.val().salario
+      novaLinha.insertCell().textContent = item.val().peso
+      novaLinha.insertCell().textContent = item.val().altura
+      novaLinha.insertCell().textContent = item.val().shiny
+      novaLinha.insertCell().textContent = item.val().regiao
       novaLinha.insertCell().innerHTML = `<button class='btn btn-sm btn-danger' onclick=remover('${db}','${id}')>🗑 Excluir</button>
       <button class='btn btn-sm btn-info' onclick=carregaDadosAlteracao('${db}','${id}')>✏️ Editar</button>`
 
     })
     let rodape = tabela.insertRow()
-    rodape.className = 'table-info'
+    rodape.className = 'table-success'
+    rodape.insertCell().textContent = ''
+    rodape.insertCell().textContent = ''
+    rodape.insertCell().textContent = ''
     rodape.insertCell().textContent = ''
     rodape.insertCell().textContent = ''
     rodape.insertCell().textContent = ''
@@ -59,8 +70,17 @@ function carregaDadosAlteracao(db, id) {
         document.getElementById('id').value = item.ref.path.pieces_[1]
         document.getElementById('nome').value = item.val().nome
         document.getElementById('email').value = item.val().email
-        document.getElementById('nascimento').value = item.val().nascimento
-        document.getElementById('salario').value = item.val().salario
+        document.getElementById('captura').value = item.val().captura
+        document.getElementById('peso').value = item.val().peso
+        document.getElementById('altura').value = item.val().altura
+        document.getElementById('shiny').value = item.val().shiny
+        document.getElementById('regiao').value = item.val().regiao
+        if(item.val().shiny===''){ 
+          document.getElementById('shiny').checked = true
+        } else {
+          document.getElementById('shiny').checked = false
+        }
+        
         if(item.val().sexo==='Masculino'){ 
           document.getElementById('sexoM').checked = true
         } else {
@@ -86,8 +106,11 @@ function salvar(event, collection) {
   //Verifica os campos obrigatórios
   if (document.getElementById('nome').value === '') { alert('⚠️É obrigatório informar o nome!') }
   else if (document.getElementById('email').value === '') { alert('⚠️É obrigatório informar o email!') }
-  else if (document.getElementById('nascimento').value === '') { alert('⚠️É obrigatório informar o nascimento!') }
-  else if (document.getElementById('salario').value === '') { alert('⚠️É obrigatório informar o salário!') }
+  else if (document.getElementById('captura').value === '') { alert('⚠️É obrigatório informar a captura!') }
+  else if (document.getElementById('peso').value === '') { alert('⚠️É obrigatório informar o peso!') }
+  else if (document.getElementById('altura').value==='') { alert('⚠️É obrigatório informar o altura!')}
+  else if (document.getElementById('shiny').value==='') { alert('⚠️É obrigatório informar se o pokemon é shiny!')}
+  else if (document.getElementById('regiao').value==='') { alert('⚠️É obrigatório informar a região!')}
   else if (document.getElementById('id').value !== '') { alterar(event, collection) }
   else { incluir(event, collection) }
 }
@@ -96,12 +119,42 @@ function salvar(event, collection) {
 function incluir(event, collection) {
   event.preventDefault()
   //Obtendo os campos do formulário
-  const form = document.forms[0];
-  const data = new FormData(form);
+  //const form = document.forms[0];
+  //const data = new FormData(form);
   //Obtendo os valores dos campos
-  const values = Object.fromEntries(data.entries());
+  //const values = Object.fromEntries(data.entries());
+  let nome = document.getElementById('nome').value;
+  let email = document.getElementById('email').value;
+  let captura = document.getElementById('captura').value;
+  let peso = document.getElementById('peso').value;
+  let altura = document.getElementById('altura').value;'  '
+  let regiao = document.getElementById('regiao').value;
+
+  var shiny =''
+  if(document.getElementById('shiny').checked){
+    shiny = 'Sim'
+  } else {
+    shiny = 'Não'
+  }  
+
+  var sexo =''
+  if(document.getElementById('sexoM').checked){
+    sexo = 'Masculino'
+  } else {
+    sexo = 'Feminino'
+  }  
+  const pokemon = {    
+          'nome' : capitalizeFirstLetter(nome),
+          'email' : email,
+          'captura' : captura,
+          'peso' : peso,    
+          'altura' : altura,  
+          'shiny'  : shiny,
+          'regiao' : regiao,
+          'sexo' : sexo
+  }  
   //Enviando os dados dos campos para o Firebase
-  return firebase.database().ref(collection).push(values)
+  return firebase.database().ref(collection).push(pokemon)
     .then(() => {
       alert('✅ Registro cadastrado com sucesso!')
       document.getElementById('formCadastro').reset()
@@ -126,8 +179,11 @@ function alterar(event, collection) {
     nome: values.nome,
     email: values.email,
     sexo: values.sexo,
-    nascimento: values.nascimento,
-    salario: values.salario
+    captura: values.captura,
+    peso: values.peso,
+    altura: values.altura,
+    shiny: values.shiny,
+    regiao: values.regiao
   })
     .then(() => {
       alert('✅ Registro alterado com sucesso!')
@@ -182,4 +238,8 @@ function totalRegistros(collection) {
     }
   })
   return retorno
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }

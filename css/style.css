@@ -6,6 +6,33 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, rgba(13, 110, 253,0.1), rgba(13, 110, 253,0.9));
+  
 }
 
+.corfonte{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: rgb(239, 205, 13);
+}
+
+.backgroundmt{
+  margin-top: 16PX;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+ 
+}
+
+.backgroundmt button{
+  margin: 16px;
+  background-color: aliceblue;
+}
+
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%; 
+  min-height: 100%;
+  z-index: -1;
+}
